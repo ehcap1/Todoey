@@ -87,7 +87,8 @@ class TodoListViewController: UITableViewController {
                 do {
                     try self.realm.write {
                         let newItem = Item()
-                    newItem.title = textField.text!
+                        newItem.title = textField.text!
+                        newItem.dateCreated = Date()
                         currentCategory.items.append(newItem)}
                 }
                 catch{
@@ -151,7 +152,7 @@ extension TodoListViewController: UISearchBarDelegate{
 //
         }
         else {
-            todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "title", ascending: true)
+            todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
             tableView.reloadData()
         }
     }
