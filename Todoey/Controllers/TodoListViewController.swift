@@ -24,13 +24,7 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
-        
-        
-        
-//        if let items = defaults.array(forKey: "TodoListArray") as? [Item]{
-//            itemArray = items
-//        }
+
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -41,18 +35,16 @@ class TodoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoitemCell", for: indexPath)
-        
         if let item = todoItems?[indexPath.row] {
+            
             //tableView.dequeueReusableCell(withIdentifier: "ToDoitemCell", for: indexPath)
-        
         cell.textLabel?.text = item.title
-        
         cell.accessoryType = item.done ? .checkmark : .none
         } else {
             cell.textLabel?.text = "No Items Added"
         }
-        
         return cell
     }
     
@@ -84,14 +76,12 @@ class TodoListViewController: UITableViewController {
             //what will happen once user clicks add button on uiAlert
             
             if let currentCategory = self.selectedCategory {
-                do {
-                    try self.realm.write {
+                do {try self.realm.write {
                         let newItem = Item()
                         newItem.title = textField.text!
                         newItem.dateCreated = Date()
                         currentCategory.items.append(newItem)}
-                }
-                catch{
+                }catch{
                     print("Error Saving Item \(error)")
                 }
             }
@@ -100,33 +90,16 @@ class TodoListViewController: UITableViewController {
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"
             textField = alertTextField
-            
         }
         
         alert.addAction(action)
-        
         present(alert, animated: true, completion: nil)
         
     }
-    //MARK: - Model Manupulation Methods
-    
-//    func saveItems() {
-//        
-//        do {
-//            try context.save()
-//        }
-//        catch{
-//            print("Error Saving context \(error)")
-//            
-//        }
-        
-    
     
     func loadItems() {
         
         todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
-
-        
         tableView.reloadData()
     }
     
